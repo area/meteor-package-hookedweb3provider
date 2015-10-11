@@ -2,7 +2,7 @@
 A hooked provider package for MeteorJS dApps.
 
 ## install
-    $ meteor add silentcicero:hookedweb3provider
+    $ meteor add silentcicero:hooked-web3-provider
 
 ## Usage
     var provider = new HookedWeb3Provider({
