@@ -1,5 +1,4 @@
 
-
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -11,16 +10,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var factory = function factory(web3) {
-  var HookedWeb3Provider = (function (_web3$providers$HttpProvider) {
-    _inherits(HookedWeb3Provider, _web3$providers$HttpProvider);
+  var HookedWeb3DdpProvider = (function (parentProvider) {
+    _inherits(HookedWeb3DdpProvider, parentProvider);
 
-    function HookedWeb3Provider(_ref) {
-      var host = _ref.host;
+    function HookedWeb3DdpProvider(_ref) {
       var transaction_signer = _ref.transaction_signer;
 
-      _classCallCheck(this, HookedWeb3Provider);
+      _classCallCheck(this, HookedWeb3DdpProvider);
 
-      _get(Object.getPrototypeOf(HookedWeb3Provider.prototype), "constructor", this).call(this, host);
+      _get(Object.getPrototypeOf(HookedWeb3DdpProvider.prototype), "constructor", this).call(this);
       this.transaction_signer = transaction_signer;
 
       // Cache of the most up to date transaction counts (nonces) for each address
@@ -31,7 +29,7 @@ var factory = function factory(web3) {
     // We can't support *all* synchronous methods because we have to call out to
     // a transaction signer. So removing the ability to serve any.
 
-    _createClass(HookedWeb3Provider, [{
+    _createClass(HookedWeb3DdpProvider, [{
       key: "send",
       value: function send(payload, callback) {
         var _this = this;
@@ -50,7 +48,7 @@ var factory = function factory(web3) {
             var request = _step.value;
 
             if (request.method == "eth_sendTransaction") {
-              throw new Error("HookedWeb3Provider does not support synchronous transactions. Please provide a callback.");
+              throw new Error("HookedWeb3DdpProvider does not support synchronous transactions. Please provide a callback.");
             }
           }
         } catch (err) {
@@ -69,7 +67,7 @@ var factory = function factory(web3) {
         }
 
         var finishedWithRewrite = function finishedWithRewrite() {
-          return _get(Object.getPrototypeOf(HookedWeb3Provider.prototype), "send", _this).call(_this, payload, callback);
+          return _get(Object.getPrototypeOf(HookedWeb3DdpProvider.prototype), "send", _this).call(_this, payload, callback);
         };
 
         return this.rewritePayloads(0, requests, {}, finishedWithRewrite);
@@ -82,9 +80,10 @@ var factory = function factory(web3) {
       key: "sendAsync",
       value: function sendAsync(payload, callback) {
         var _this2 = this;
-
+        console.log('prerewrite', payload)
         var finishedWithRewrite = function finishedWithRewrite() {
-          _get(Object.getPrototypeOf(HookedWeb3Provider.prototype), "sendAsync", _this2).call(_this2, payload, callback);
+          console.log(payload);
+          _get(Object.getPrototypeOf(HookedWeb3DdpProvider.prototype), "sendAsync", _this2).call(_this2, payload, callback);
         };
 
         var requests = payload;
@@ -198,15 +197,15 @@ var factory = function factory(web3) {
       }
     }]);
 
-    return HookedWeb3Provider;
-  })(web3.providers.HttpProvider);
+    return HookedWeb3DdpProvider;
+  })(DdpProvider);
 
-  return HookedWeb3Provider;
+  return HookedWeb3DdpProvider;
 };
 
 if (typeof module !== 'undefined') {
   module.exports = factory(require("web3"));
 } else {
   var web3 = new Web3();
-  window.HookedWeb3Provider = factory(web3);
+  window.HookedWeb3DdpProvider = factory(web3);
 }
