@@ -11,7 +11,7 @@ Package.describe({
 
 Package.onUse(function(api) {
   api.versionsFrom('1.0.3.2');
-  api.use('colony:web3-ddp-provider');
+  api.use('colony:web3-ddp-provider@0.0.1');
   api.export(['HookedWeb3DdpProvider'], ['client']);
 
   api.addFiles('hooked-web3-ddp-provider.js', 'client');
