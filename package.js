@@ -1,7 +1,7 @@
 /* jshint ignore:start */
 Package.describe({
   name: 'colony:hooked-web3-ddp-provider',
-  version: '0.0.4',
+  version: '0.0.1',
   summary: 'Web3 Provider that communicates with geth via DDP. Uses an external key provider/transaction signer',
   git: 'https://github.com/joinColony/meteor-package-hookedweb3provider.git',
   // By default, Meteor will default to using README.md for documentation.
