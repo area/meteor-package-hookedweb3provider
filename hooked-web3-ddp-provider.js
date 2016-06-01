@@ -83,7 +83,12 @@ var factory = function factory(web3) {
         console.log('prerewrite', payload)
         var finishedWithRewrite = function finishedWithRewrite() {
           console.log(payload);
-          _get(Object.getPrototypeOf(HookedWeb3DdpProvider.prototype), "sendAsync", _this2).call(_this2, payload, callback);
+          var error = Array.prototype.slice.apply(arguments);
+          if(error && error[0] instanceof Error) {
+            callback(error[0]);
+          } else {
+            _get(Object.getPrototypeOf(HookedWeb3DdpProvider.prototype), "sendAsync", _this2).call(_this2, payload, callback);
+          }
         };
 
         var requests = payload;
